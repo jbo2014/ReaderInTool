@@ -322,13 +322,13 @@ namespace Reader
             return SqlHelper.ExecuteSqlInsertImg(sql, encImg);
         }
         //删除一页漫画图片
-        public void DelMag(string id)
+        public int DelMag(string id)
         {
             string sql = "DELETE FROM Manga WHERE ID=" + id;
-            SqlHelper.ExecuteSql(sql);
+            return SqlHelper.ExecuteSql(sql);
         }
         //
-        public void UpdateConts(Hashtable ht)
+        public int UpdateConts(Hashtable ht)
         {
             string sql = null;
             if(ht["type"].ToString()=="txt")
@@ -338,7 +338,7 @@ namespace Reader
                     new SQLiteParameter("@conts", ht["Conts"]),  
                     new SQLiteParameter("@id", ht["ID"]) 
                 };
-                SqlHelper.ExecuteSql(sql, sp);
+                return SqlHelper.ExecuteSql(sql, sp);
             }
             else if (ht["type"].ToString() == "mag")
             {
@@ -357,9 +357,9 @@ namespace Reader
                 al.Add(new SQLiteParameter("@ID", ht["ID"]));
 
                 sps = (SQLiteParameter[])al.ToArray(typeof(SQLiteParameter));
-                SqlHelper.ExecuteSql(sql, sps);
+                return SqlHelper.ExecuteSql(sql, sps);
             }
-            
+            return 0;
         }
         
         

@@ -99,8 +99,8 @@ namespace Reader
 
             //一级加入根
             root.Nodes.Add(node1);
-            root.Nodes.Add(node2);
             root.Nodes.Add(node3);
+            root.Nodes.Add(node2);
             root.Nodes.Add(node4);
             //
             treeView1.Nodes.Add(root);
@@ -153,47 +153,47 @@ namespace Reader
                     Title.Text = dr["Title"].ToString();
                     No.Text = dr["No"].ToString();
 
-                    byte[] imgByte = null;
-                    byte[] de = null;
                     ds2 = hs.GetVol(id);
-                    DataRow dr2 = ds2.Tables[0].Rows[0];
-
-                    //填充imgList
-                    imgList.Images.Clear();
-                    imgList.ImageSize = new Size(136,242);
-                    imgByte = (byte[])dr2["img1"];
-                    de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
-                    imgList.Images.Add("1", Transform.BytToImg(de));
-                    imgByte = (byte[])dr2["img2"];
-                    de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
-                    imgList.Images.Add("2", Transform.BytToImg(de));
-                    imgByte = (byte[])dr2["img3"];
-                    de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
-                    imgList.Images.Add("3", Transform.BytToImg(de));
+                    lvImgBinding("v", ds2.Tables[0].Rows);
+                    //byte[] imgByte = null;
+                    //byte[] de = null;
                     
-                    //填充lvImg
-                    lvImg.Items.Clear();
-                    lvImg.View = View.LargeIcon;
-                    lvImg.LargeImageList = imgList;
-                    lvImg.SelectedIndexChanged -= lvImg_SelectedIndexChanged;
-                    ListViewItem li = null;
+                    //填充imgList
+                    //imgList.Images.Clear();
+                    //imgList.ImageSize = new Size(136,242);
+                    //imgByte = (byte[])dr2["img1"];
+                    //de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                    //imgList.Images.Add("1", Transform.BytToImg(de));
+                    //imgByte = (byte[])dr2["img2"];
+                    //de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                    //imgList.Images.Add("2", Transform.BytToImg(de));
+                    //imgByte = (byte[])dr2["img3"];
+                    //de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                    //imgList.Images.Add("3", Transform.BytToImg(de));
+                    
+                    ////填充lvImg
+                    //lvImg.Items.Clear();
+                    //lvImg.View = View.LargeIcon;
+                    //lvImg.LargeImageList = imgList;
+                    //lvImg.SelectedIndexChanged -= lvImg_SelectedIndexChanged;
+                    //ListViewItem li = null;
 
-                    string[] ltit = {"分册","封面","目录"};
-                    string[] lid = { dr2["volid"].ToString(), dr2["covid"].ToString(), dr2["catid"].ToString() };
-                    for (int i = 0; i < imgList.Images.Count; i++) 
-                    {
-                        li = new ListViewItem();
-                        li.Text = ltit[i];
-                        li.Tag = lid[i];
-                        li.ImageIndex = i;
-                        lvImg.Items.Add(li);
-                    }
+                    //string[] ltit = {"分册","封面","目录"};
+                    //string[] lid = { dr2["volid"].ToString(), dr2["covid"].ToString(), dr2["catid"].ToString() };
+                    //for (int i = 0; i < imgList.Images.Count; i++) 
+                    //{
+                    //    li = new ListViewItem();
+                    //    li.Text = ltit[i];
+                    //    li.Tag = lid[i];
+                    //    li.ImageIndex = i;
+                    //    lvImg.Items.Add(li);
+                    //}
                 }
                 else if (p == "c") //点击章回
                 {
                     DataSet ds2 = null;
 
-                    tsb_add.Text = "增加图片或文本";
+                    tsb_add.Text = "增加图片";
                     tsb_del.Text = "删除该章回";
                     tsb_edt.Text = "修改该章回";
                     tsb_del.Enabled = true;
@@ -210,33 +210,34 @@ namespace Reader
                         tsb_add.Enabled = true;
                         lvImg.Visible = true;
 
-                        byte[] imgByte = null;
                         ds2 = hs.GetTableByWhere("Manga", "ChpID=" + e.Node.Name.Substring(1));
+                        lvImgBinding("c", ds2.Tables[0].Rows);
+                        //byte[] imgByte = null;
 
-                        //填充imgList
-                        imgList.Images.Clear();
-                        imgList.ImageSize = new Size(136, 242);
-                        //填充lvImg
-                        lvImg.Items.Clear();
-                        lvImg.View = View.LargeIcon;
+                        ////填充imgList
+                        //imgList.Images.Clear();
+                        //imgList.ImageSize = new Size(136, 242);
+                        ////填充lvImg
+                        //lvImg.Items.Clear();
+                        //lvImg.View = View.LargeIcon;
 
-                        int i = 0;
-                        foreach(DataRow dr2 in ds2.Tables[0].Rows)
-                        {
-                            imgByte = (byte[])dr2["Contents"];
-                            byte[] de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                        //int i = 0;
+                        //foreach(DataRow dr2 in ds2.Tables[0].Rows)
+                        //{
+                        //    imgByte = (byte[])dr2["Contents"];
+                        //    byte[] de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
 
-                            imgList.Images.Add(Transform.BytToImg(de));
-                            lvImg.Items.Add("",i);
-                            lvImg.Items[i].ImageIndex = i;
-                            lvImg.Items[i].Tag = dr2["No"].ToString();
-                            lvImg.Items[i].Name = dr2["Id"].ToString();
-                            lvImg.Items[i].Text = "第" + dr2["No"].ToString() + "页";
-                            i++;
-                        }
+                        //    imgList.Images.Add(Transform.BytToImg(de));
+                        //    lvImg.Items.Add("",i);
+                        //    lvImg.Items[i].ImageIndex = i;
+                        //    lvImg.Items[i].Tag = dr2["No"].ToString();
+                        //    lvImg.Items[i].Name = dr2["Id"].ToString();
+                        //    lvImg.Items[i].Text = "第" + dr2["No"].ToString() + "页";
+                        //    i++;
+                        //}
 
-                        lvImg.LargeImageList = imgList;
-                        lvImg.SelectedIndexChanged += lvImg_SelectedIndexChanged;
+                        //lvImg.LargeImageList = imgList;
+                        //lvImg.SelectedIndexChanged += lvImg_SelectedIndexChanged;
                     }
                     else if (dr["type"].ToString() == "2" || dr["type"].ToString() == "4")
                     {
@@ -264,9 +265,9 @@ namespace Reader
         //刷新目录树
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            //treeView1.Refresh();
             treeView1.Nodes.Clear();
             BindTreeView();
+            treeView1.SelectedNode = treeView1.Nodes[0];
         }
 
         //右上角增加按钮
@@ -293,11 +294,7 @@ namespace Reader
 
             LabTit2.Visible = true;
             Title2.Visible = true;
-            Title2.Text = "";
-            No2.Text = "";
-            tb1.Text = "";
-            tb2.Text = "";
-            tb3.Text = "";
+            clearInput();
 
             string p = treeView1.SelectedNode.Name.Substring(0,1);
             if (p == "t") 
@@ -338,7 +335,7 @@ namespace Reader
             hs = new Handles();
 
             panel2.Visible = true;
-            //button1.Click += null;
+            clearInput();
             Helper.RemoveControlEvent(button1, "EventClick");
             button2.Visible = false;
             operate.Text = "1";
@@ -347,9 +344,6 @@ namespace Reader
             Title2.Visible = true;
             Title2.Text = Title.Text;
             No2.Text = No.Text;
-            tb1.Text = "";
-            tb2.Text = "";
-            tb3.Text = "";
             syncTxt.Visible = false;
 
             string p = treeView1.SelectedNode.Name.Substring(0, 1);
@@ -390,17 +384,39 @@ namespace Reader
         private void tsb_del_Click(object sender, EventArgs e)
         {
             hs = new Handles();
+            int rst = 0;
             string p = treeView1.SelectedNode.Name.Substring(0, 1);
             string id = treeView1.SelectedNode.Name.Substring(1);
 
             if (p == "v")
             {
-                hs.DelVolume(id);
+                try
+                {
+                    hs.DelVolume(id);
+                    rst = 1;
+                }
+                catch
+                {
+                    showExeMsg(rst);
+                    return;
+                }
             }
             else if (p == "c") 
             {
-                hs.DelChp(id);
+                try
+                {
+                    hs.DelChp(id);
+                    rst = 1;
+                }
+                catch 
+                {
+                    showExeMsg(rst);
+                    return;
+                }
             }
+            showExeMsg(rst);
+            //TreeNode paTN = treeView1.SelectedNode.Parent;//Parent.Checked = true; // = treeView1.Nodes[0];
+            toolStripButton1.PerformClick();
         }
 
 
@@ -430,6 +446,7 @@ namespace Reader
         //单击ImageList元素图片时触发
         private void lvImg_SelectedIndexChanged(object sender, EventArgs e)
         {
+            clearInput();
             if (lvImg.SelectedItems.Count > 0)
             {
                 panel2.Visible = true;
@@ -490,7 +507,19 @@ namespace Reader
             ht.Add("Img", this.tb1.Text);
             ht.Add("Img1", this.tb2.Text);
             ht.Add("Img2", this.tb3.Text);
-            hs.InsertVolume(ht);
+            
+            int rst = 0;
+            try
+            {
+                hs.InsertVolume(ht);
+                rst = 1;
+            }
+            catch
+            {
+                showExeMsg(rst);
+                return;
+            }
+            showExeMsg(rst);
         }
 
 
@@ -514,7 +543,19 @@ namespace Reader
             ht.Add("Img", tb1.Text);
             ht.Add("Img1", tb2.Text);
             ht.Add("Img2", tb3.Text);
-            hs.UpdateVolume(ht);
+            
+            int rst = 0;
+            try
+            {
+                hs.UpdateVolume(ht);
+                rst = 2;
+            }
+            catch
+            {
+                showExeMsg(rst);
+                return;
+            }
+            showExeMsg(rst);
         }
         //添加章回
         private void CHP_ADD_Click(object sender, EventArgs e)
@@ -532,7 +573,7 @@ namespace Reader
 
             if (type == "1" || type == "3")
             {
-                if (Directory.Exists(tb1.Text))
+                if (!Directory.Exists(tb1.Text))
                 {
                     DialogResult dr = MessageBox.Show("路径不存在.", "错误提示", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     if (dr == DialogResult.OK)//如果点击“确定”按钮
@@ -553,15 +594,25 @@ namespace Reader
             ht.Add("Tit", Title2.Text);
             ht.Add("Vol", volid);
             ht.Add("Path", tb1.Text);
-
+            int rst = 0;
             if(type=="1" || type=="3")
-            {
-                hs.InsertImgBat(ht);
+            {                
+                try
+                {
+                    hs.InsertImgBat(ht);
+                    rst = 1;
+                }
+                catch
+                {
+                    showExeMsg(rst);
+                    return;
+                }
             }
             else
             {
-                hs.InsertTxt(ht);
+                rst = hs.InsertTxt(ht);
             }
+            showExeMsg(rst); 
         }
 
 
@@ -574,18 +625,20 @@ namespace Reader
         {
             hs = new Handles();
             Hashtable ht = new Hashtable();
+            int rst = 0;
             string chpid = treeView1.SelectedNode.Name.Substring(1);
             string type = hs.GetTypeByID("Chapter", chpid);
             ht.Add("ID", chpid);
             ht.Add("Tit", Title2.Text);
             ht.Add("No", No2.Text);
-            hs.UpdateChapter(ht);
+            rst = hs.UpdateChapter(ht);
             if (syncTxt.Visible == true && syncTxt.Checked)
             {
                 ht.Add("type", "txt");
                 ht.Add("Conts", rtb_txt.Text);
-                hs.UpdateConts(ht);
+                rst = hs.UpdateConts(ht);
             }
+            showExeMsg(rst);
         }
         //添加新的漫画图片
         private void MGA_ADD_Click(object sender, EventArgs e)
@@ -602,7 +655,11 @@ namespace Reader
             ht.Add("No", No2.Text);
             ht.Add("ChpID", chpid);
             ht.Add("Img", tb1.Text);
-            hs.AddNewMag(ht);
+            int rst = hs.AddNewMag(ht);
+            if (rst > 0)
+                showExeMsg(2);
+            else
+                showExeMsg(0);
         }
         //修改选择的漫画图片
         private void MGA_EDT_Click(object sender, EventArgs e)
@@ -615,20 +672,34 @@ namespace Reader
                 if (dr == DialogResult.OK)//如果点击“确定”按钮
                     return;
             }
-
+            if (lvImg.SelectedItems.Count == 0)
+                return;
             string mgaid = lvImg.SelectedItems[0].Name.ToString();
             ht.Add("type", "mag");
             ht.Add("ID", mgaid);
             ht.Add("Conts", tb1.Text);
             ht.Add("No", No2.Text);
 
-            hs.UpdateConts(ht);
+            int rst = hs.UpdateConts(ht);
+            if (rst > 0)
+                showExeMsg(2);
+            else
+                showExeMsg(0);
+
+            button2.Visible = false;
         }
         //删除按钮 删除选择的漫画图片
         private void MGA_DEL_Click(object sender, EventArgs e)
         {
             hs = new Handles();
-            hs.DelMag(lvImg.SelectedItems[0].Name.ToString());
+            if (lvImg.SelectedItems.Count > 0)
+            {
+                int rst = hs.DelMag(lvImg.SelectedItems[0].Name.ToString());
+                if (rst > 0)
+                    showExeMsg(2);
+                else
+                    showExeMsg(0);
+            }
         }
 
         /******************************************** Panel2 确认按钮的点击事件 END****************************************/
@@ -688,6 +759,130 @@ namespace Reader
             {
                 return false;
             }
+        }
+        //操作结果弹出框
+        //0:操作失败,1:操作成功不需要刷新,2:操作成功需要刷新
+        private void showExeMsg(int i) 
+        {
+            
+            if (i == 0)
+            {
+                DialogResult dr = MessageBox.Show("操作失败！", "操作执行结果", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (dr == DialogResult.OK)//如果点击“确定”按钮
+                    return;
+            }
+            else if (i == 1)
+            {
+                DialogResult dr = MessageBox.Show("操作成功！", "操作执行结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (dr == DialogResult.OK)//如果点击“确定”按钮
+                    return;
+            }
+            else if (i == 2)
+            {
+                DialogResult dr = MessageBox.Show("操作成功！", "操作执行结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (dr == DialogResult.OK)//如果点击“确定”按钮
+                {
+                    string p = treeView1.SelectedNode.Name.Substring(0, 1);
+                    string id = treeView1.SelectedNode.Name.Substring(1);
+                    DataSet ds2 = null;
+                    if (p == "v" && operate.Text == "1")
+                    {
+                        ds2 = hs.GetVol(id);
+                    }
+                    else if (p == "c")
+                    {
+                        string typ = hs.GetTypeByID("Chapter", id);
+                        if (typ == "2" || typ == "4")
+                            return;
+                        ds2 = hs.GetTableByWhere("Manga", "ChpID=" + id);
+                    }
+                    if (ds2.Tables.Count > 0)
+                        lvImgBinding(p, ds2.Tables[0].Rows);
+                    return;
+                }
+            }
+        }
+        //lvImg绑定
+        private void lvImgBinding(string x, DataRowCollection drs) 
+        {
+            byte[] imgByte = null;
+
+            imgList.Images.Clear();
+            imgList.ImageSize = new Size(136, 242);
+            lvImg.Items.Clear();
+            if (x.ToLower() == "c") 
+            {
+                //填充imgList
+                imgList.Images.Clear();
+                imgList.ImageSize = new Size(136, 242);
+                //填充lvImg
+                lvImg.Items.Clear();
+                lvImg.View = View.LargeIcon;
+
+                int i = 0;
+                foreach (DataRow dr in drs)
+                {
+                    imgByte = (byte[])dr["Contents"];
+                    byte[] de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+
+                    imgList.Images.Add(Transform.BytToImg(de));
+                    lvImg.Items.Add("", i);
+                    lvImg.Items[i].ImageIndex = i;
+                    lvImg.Items[i].Tag = dr["No"].ToString();
+                    lvImg.Items[i].Name = dr["Id"].ToString();
+                    lvImg.Items[i].Text = "第" + dr["No"].ToString() + "页";
+                    i++;
+                }
+
+                lvImg.LargeImageList = imgList;
+                lvImg.SelectedIndexChanged += lvImg_SelectedIndexChanged;
+            }
+            else if (x.ToLower() == "v")
+            {
+                //填充imgList
+                byte[] de = null;
+                DataRow dr = drs[0];
+                imgByte = (byte[])dr["img1"];
+                de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                imgList.Images.Add("1", Transform.BytToImg(de));
+                imgByte = (byte[])dr["img2"];
+                de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                imgList.Images.Add("2", Transform.BytToImg(de));
+                imgByte = (byte[])dr["img3"];
+                de = Encrypt.DecryptByte(imgByte, "Za@$100%", "395^abC~");
+                imgList.Images.Add("3", Transform.BytToImg(de));
+
+                //填充lvImg
+                lvImg.View = View.LargeIcon;
+                lvImg.LargeImageList = imgList;
+                lvImg.SelectedIndexChanged -= lvImg_SelectedIndexChanged;
+                ListViewItem li = null;
+
+                string[] ltit = { "分册", "封面", "目录" };
+                string[] lid = { dr["volid"].ToString(), dr["covid"].ToString(), dr["catid"].ToString() };
+                for (int i = 0; i < imgList.Images.Count; i++)
+                {
+                    li = new ListViewItem();
+                    li.Text = ltit[i];
+                    li.Tag = lid[i];
+                    li.ImageIndex = i;
+                    lvImg.Items.Add(li);
+                }
+            }
+            else 
+            {
+                return;
+            }
+        }
+        //清空填写内容
+        private void clearInput() 
+        {
+            Title2.Text = "";
+            No2.Text = "";
+            tb1.Text = "";
+            tb2.Text = "";
+            tb3.Text = "";
+            syncTxt.Checked = false;
         }
 
     }
